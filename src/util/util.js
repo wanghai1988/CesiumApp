@@ -3,11 +3,11 @@ import * as Cesium from 'cesium';
 export var viewer;
 
 export function initCesium() {
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxYTY1MGU1Ni04ZTNmLTRjYWUtODg2My00OTA3NjAzOWZlZjAiLCJpZCI6MTM1MTA1LCJpYXQiOjE2OTA4NzAwNTJ9.thbwGjb0BPAM00q1c_pEUbwYkQN9W0POVvCD56gOpMU';
     const worldTerrain = Cesium.createWorldTerrain({
         requestWaterMask: true, // 添加水面波浪效果
         requestVertexNormals: true // 添加地形光照
     });
-    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxYTY1MGU1Ni04ZTNmLTRjYWUtODg2My00OTA3NjAzOWZlZjAiLCJpZCI6MTM1MTA1LCJpYXQiOjE2OTA4NzAwNTJ9.thbwGjb0BPAM00q1c_pEUbwYkQN9W0POVvCD56gOpMU';
     viewer = new Cesium.Viewer('cesiumContainer',{
         geocoder:false,
         homeButton:false,
@@ -89,6 +89,7 @@ export  function createModelByMode(url, height,viewMode){
             silhouetteSize: parseFloat(viewMode.silhouetteSize),
         },
     })
+    return viewer.trackedEntity
 }
 
 export function getColor(colorName, alpha){
@@ -98,4 +99,23 @@ export function getColor(colorName, alpha){
 
 export  function getColorBlendMode(colorBlendMode) {
     return Cesium.ColorBlendMode[colorBlendMode.toUpperCase()];
+}
+
+export function getFlagForKeyCode (keyCode) {
+    switch (keyCode) {
+        case "W".charCodeAt(0):
+            return "moveForward";
+        case "S".charCodeAt(0):
+            return "moveBackward";
+        case "Q".charCodeAt(0):
+            return "moveUp";
+        case "E".charCodeAt(0):
+            return "moveDown";
+        case "D".charCodeAt(0):
+            return "moveRight";
+        case "A".charCodeAt(0):
+            return "moveLeft";
+        default:
+            return undefined;
+    }
 }

@@ -7,8 +7,11 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    3DTilesBIM: typeof import('./components/3DTilesBIM.vue')['default']
     BaseHeader: typeof import('./components/BaseHeader.vue')['default']
     BaseSide: typeof import('./components/BaseSide.vue')['default']
+    CameraTutorials: typeof import('./components/CameraTutorials.vue')['default']
+    ClampToTerrain: typeof import('./components/ClampToTerrain.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
@@ -19,11 +22,13 @@ declare module 'vue' {
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElRow: typeof import('element-plus/es')['ElRow']
+    ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSlider: typeof import('element-plus/es')['ElSlider']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     ModelColorConfig: typeof import('./components/ModelColorConfig.vue')['default']
     ModelSelector: typeof import('./components/ModelSelector.vue')['default']
+    ThreeDTilesBIM: typeof import('./components/threeDTilesBIM.vue')['default']
   }
 }

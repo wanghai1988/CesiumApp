@@ -1,7 +1,7 @@
 <script>
 
 import * as Cesium from 'cesium';
-import {createModelByMode} from "~/util/util.js";
+import {createModelByMode, getColor, getColorBlendMode, viewer} from "~/util/util.js";
 
 const options = [
   {
@@ -65,26 +65,41 @@ export default {
   },
   methods: {
     selectChange: function (event) {
-      console.log(this.value);
-      createModelByMode(this.value.value.url, this.value.value.height,this.viewModel)
+      console.log(this.curMode);
+      this.entity = createModelByMode(this.curMode.value.url, this.curMode.value.height,this.viewModel)
     },
 
     colorBlendModeChange:function (event){
-      const blendMode = this.getColorBlendMode(this.colorBlendMode);
+      const blendMode = getColorBlendMode(this.viewModel.colorBlendMode);
       this.entity.model.colorBlendMode = blendMode;
-      this.colorBlendAmountEnabled =
+      this.viewModel.colorBlendAmountEnabled =
           blendMode === Cesium.ColorBlendMode.MIX;
     },
     colorChange:function (event){
-      this.entity.model.color = this.getColor(this.color, this.alpha);
+      this.entity.model.color = getColor(this.viewModel.color, this.viewModel.alpha);
     },
     alphaChange:function (event){
-      this.entity.model.color = this.getColor(this.color, this.alpha);
+      this.entity.model.color = getColor(this.viewModel.color, this.viewModel.alpha);
+    },
+    mixChange:function (event){
+      this.entity.model.colorBlendAmount = this.colorBlendAmount;
+    },
+    silhouetteColorChange:function (event){
+      this.entity.model.silhouetteColor = getColor(this.viewModel.silhouetteColor,this.viewModel.silhouetteAlpha);
+    },
+    silhouetteAlphaChange:function (event){
+      this.entity.model.silhouetteColor = getColor(this.viewModel.silhouetteColor,this.viewModel.silhouetteAlpha);
+    },
+    silhouetteSizeChange:function (event){
+      this.entity.model.silhouetteSize = this.viewModel.silhouetteSize;
+    },
+    shadowsChange:function (event){
+      viewer.shadows = this.shadows;
     },
   },
   mounted() {
     console.log("ModelColorConfig","mounted");
-    createModelByMode(this.curMode.value.url, this.curMode.value.height,this.viewModel);
+    this.entity = createModelByMode(this.curMode.value.url, this.curMode.value.height,this.viewModel);
   }
 }
 </script>
@@ -142,7 +157,7 @@ export default {
         <div>Mix</div>
       </el-col>
       <el-col :span="19">
-        <el-slider v-model="viewModel.colorBlendAmount" input-size="small" show-input :min=0 :max=1.0 :step=0.01 :disabled="colorBlendMode !== 'Mix'"/>
+        <el-slider v-model="viewModel.colorBlendAmount" input-size="small" show-input :min=0 :max=1.0 :step=0.01 @change="mixChange" :disabled="viewModel.colorBlendMode !== 'Mix'"/>
       </el-col>
     </el-row>
 
@@ -157,7 +172,7 @@ export default {
         <div>Color</div>
       </el-col>
       <el-col :span="12">
-        <el-select v-model="viewModel.silhouetteColor" size="small"
+        <el-select v-model="viewModel.silhouetteColor" size="small" @change="silhouetteColorChange"
         >
           <el-option
               v-for="item in viewModel.silhouetteColors"
@@ -174,7 +189,7 @@ export default {
         <div>Alpha</div>
       </el-col>
       <el-col :span="19">
-        <el-slider v-model="viewModel.silhouetteAlpha" input-size="small" show-input/>
+        <el-slider v-model="viewModel.silhouetteAlpha" input-size="small" show-input @change="silhouetteAlphaChange" />
       </el-col>
     </el-row>
 
@@ -183,7 +198,7 @@ export default {
         <div>Size</div>
       </el-col>
       <el-col :span="19">
-        <el-slider v-model="viewModel.silhouetteSize" :show-input-controls="false" input-size="small" show-input/>
+        <el-slider v-model="viewModel.silhouetteSize" :show-input-controls="false" input-size="small" show-input @change="silhouetteSizeChange"/>
       </el-col>
     </el-row>
 
@@ -199,7 +214,7 @@ export default {
         </el-select>
       </el-col>
       <el-col :span="6">
-        <el-checkbox v-model="shadows" label="Shadows" size="large"/>
+        <el-checkbox v-model="shadows" label="Shadows" size="large" @change="shadowsChange"/>
       </el-col>
     </el-row>
 
@@ -217,5 +232,8 @@ export default {
 
 .ep-row:last-child {
   margin-bottom: 0;
+}
+.box-card{
+  opacity: 0.8;
 }
 </style>

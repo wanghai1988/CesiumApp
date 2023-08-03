@@ -31,6 +31,9 @@ export default {
         <div id="cesiumContainer"></div>
       <ModelSelector v-if = "curMenu === '3D Models'"  style=" margin-left:260px;position:absolute"></ModelSelector>
       <ModelColorConfig v-if = "curMenu === '3D Models Coloring'"  style=" margin-left:260px;margin-top:10px;position:absolute"></ModelColorConfig>
+      <CameraTutorials v-if = "curMenu === 'Camera Tutorial'"  style=" margin-left:260px;margin-top:10px;position:absolute"></CameraTutorials>
+      <ClampToTerrain v-if = "curMenu === 'Clamp to Terrain'"  style=" margin-left:260px;margin-top:10px;position:absolute"></ClampToTerrain>
+
     </div>
   </el-config-provider>
 </template>
